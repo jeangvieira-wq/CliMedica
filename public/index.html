@@ -1,16 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CliMedica</title>
+  <title>CliMedica</title>
 </head>
 <body>
-    <form action="" method="get">
-        
-        <input type="text" placeholder="Insira seu nome:">
-        <input type="email" name="" id="" placeholder="Insira seu email:">
-        <input type="number" name="" id="" placeholder="Insira seu Telefone:">
-    </form>
+
+<h2>Cadastrar Pacientes:</h2>
+
+<input id="nome" placeholder="Nome">
+<input id="email" placeholder="Email">
+<button onclick="criar()">Salvar</button>
+
+<h2>Lista</h2>
+<ul id="lista"></ul>
+
+<script>
+async function criar() {
+  const nome = document.getElementById('nome').value
+  const email = document.getElementById('email').value
+
+  await fetch('/api/pacientes', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ nome, email })
+  })
+
+  listar()
+}
+
+async function listar() {
+  const res = await fetch('/api/pacientes')
+  const data = await res.json()
+
+  const lista = document.getElementById('lista')
+  lista.innerHTML = ''
+
+  data.forEach(user => {
+    const li = document.createElement('li')
+    li.innerText = user.nome + ' - ' + user.email
+    lista.appendChild(li)
+  })
+}
+
+listar()
+</script>
+
 </body>
 </html>

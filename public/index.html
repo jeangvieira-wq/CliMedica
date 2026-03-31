@@ -9,22 +9,24 @@
 
 <input id="nome" placeholder="Nome">
 <input id="email" placeholder="Email">
+<input id="telefone" placeholder="Telefone">
+
 <button onclick="criar()">Salvar</button>
 
-<h2>Lista</h2>
 <ul id="lista"></ul>
 
 <script>
 async function criar() {
   const nome = document.getElementById('nome').value
   const email = document.getElementById('email').value
+  const telefone = document.getElementById('telefone').value
 
   await fetch('/api/pacientes', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ nome, email })
+    body: JSON.stringify({ nome, email, telefone })
   })
 
   listar()
@@ -39,7 +41,7 @@ async function listar() {
 
   data.forEach(user => {
     const li = document.createElement('li')
-    li.innerText = user.nome + ' - ' + user.email
+    li.innerText = `${user.nome} - ${user.email} - ${user.telefone || ''}`
     lista.appendChild(li)
   })
 }
